@@ -15,7 +15,7 @@ namespace PersonnelAccounting
             bool isWork = true;
 
             string userInput;
-            string[] fullNames = new string[] { "Иванов Иван Иванович", "Петров Петр Петрович", "Карлов Крал Карлович" };
+            string[] fullNames = new string[] { "Иванов Иван Иванович", "Петров Петр Петрович", "Карлов Карл Карлович" };
             string[] positions = new string[] { "Актер", "Художник", "Музыкант" };
 
             while (isWork)
@@ -26,8 +26,9 @@ namespace PersonnelAccounting
                 Console.WriteLine($"{CommandDeleteDossier} Удалить досье");
                 Console.WriteLine($"{CommandSearchSurnames} Поиск по фамилии");
                 Console.WriteLine($"{CommandExit} Выход");
-
+                
                 userInput = Console.ReadLine();
+                Console.Clear();
 
                 switch (userInput)
                 {
@@ -51,6 +52,7 @@ namespace PersonnelAccounting
                         isWork = false;
                         break;
                 }
+                Console.WriteLine("\n");
             }
         }
 
@@ -62,8 +64,8 @@ namespace PersonnelAccounting
             Console.WriteLine("Должность");
             string inputPost = Console.ReadLine();
 
-            EnlargeArray(ref fullNamesArray, inputName);
-            EnlargeArray(ref positionsArray, inputPost);
+            fullNamesArray = EnlargeArray(fullNamesArray, inputName);
+            positionsArray = EnlargeArray(positionsArray, inputPost);
         }
 
         private static void OutputAllDossiers(ref string[] fullNamesArray, ref string[] positionsArray)
@@ -85,8 +87,8 @@ namespace PersonnelAccounting
             }
             else
             {
-                ReduceArray(ref fullNamesArray, element - 1);
-                ReduceArray(ref positionsArray, element - 1);
+                fullNamesArray = ReduceArray(fullNamesArray, element - 1);
+                positionsArray = ReduceArray(positionsArray, element - 1);
             }
         }
 
@@ -103,7 +105,7 @@ namespace PersonnelAccounting
 
                 for (int j = 0; j < splitArray.Length; j++)
                 {
-                    if (splitArray[j].Equals(surname) && splitArray[j] == splitArray[0])
+                    if (splitArray[0].ToLower().Equals(surname.ToLower()))
                     {
                         searchResult = $"{i + 1} {fullNamesArray[i]} {positionsArray[i]}";
                         break;
@@ -111,10 +113,17 @@ namespace PersonnelAccounting
                 }
             }
 
-            Console.WriteLine(searchResult);
+            if (searchResult != string.Empty)
+            {
+                Console.WriteLine(searchResult);
+            }
+            else
+            {
+                Console.WriteLine("Фамилия не найдена");
+            }
         }
 
-        private static string[] EnlargeArray(ref string[] array, string newSize)
+        private static string[] EnlargeArray(string[] array, string newSize)
         {
             string[] tempArray = new string[array.Length + 1];
 
@@ -129,15 +138,21 @@ namespace PersonnelAccounting
             return array;
         }
 
-        private static string[] ReduceArray(ref string[] array, int element)
+        private static string[] ReduceArray(string[] array, int element)
         {
-            for (int i = element; i < array.Length - 1; i++)
+            string[] tempArray = new string[array.Length - 1];
+
+            for (int i = 0; i < element; i++)
             {
-                array[i] = array[i + 1];
+                tempArray[i] = array[i];
             }
 
-            Array.Resize(ref array, array.Length - 1);
+            for (int i = element; i < array.Length - 1; i++)
+            {
+                tempArray[i] = array[i + 1];
+            }
 
+            array = tempArray;
             return array;
         }
     }
