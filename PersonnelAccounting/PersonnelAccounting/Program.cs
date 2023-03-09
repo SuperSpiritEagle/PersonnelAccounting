@@ -37,7 +37,7 @@ namespace PersonnelAccounting
                         break;
 
                     case CommandOutputAllDossiers:
-                        OutputAllDossiers(ref fullNames, ref positions);
+                        OutputAllDossiers(fullNames, positions);
                         break;
 
                     case CommandDeleteDossier:
@@ -45,7 +45,7 @@ namespace PersonnelAccounting
                         break;
 
                     case CommandSearchSurnames:
-                        SearchSurnames(ref fullNames, ref positions);
+                        SearchSurnames(fullNames, positions);
                         break;
 
                     case CommandExit:
@@ -69,11 +69,14 @@ namespace PersonnelAccounting
             positionsArray = EnlargeArray(positionsArray, inputPost);
         }
 
-        private static void OutputAllDossiers(ref string[] fullNamesArray, ref string[] positionsArray)
+        private static void OutputAllDossiers(string[] fullNamesArray, string[] positionsArray)
         {
             for (int i = 0; i < fullNamesArray.Length; i++)
             {
-                Console.WriteLine($"{i + 1} {fullNamesArray[i]} {positionsArray[i]}");
+                int number = 1;
+                int dossierNumber = i + number;    
+
+                Console.WriteLine($"{dossierNumber} {fullNamesArray[i]} {positionsArray[i]}");  
             }
         }
 
@@ -93,7 +96,7 @@ namespace PersonnelAccounting
             }
         }
 
-        private static void SearchSurnames(ref string[] fullNamesArray, ref string[] positionsArray)
+        private static void SearchSurnames(string[] fullNamesArray, string[] positionsArray)
         {
             char whitespace = ' ';
 
@@ -106,16 +109,23 @@ namespace PersonnelAccounting
             {
                 string[] splitArray = fullNamesArray[i].Split(whitespace);
 
-                if (splitArray[0].ToLower() == surname.ToLower())
+                for (int j = 0; j < splitArray.Length; j++)
                 {
-                    Console.WriteLine($"[{i + 1}] Full name: [{fullNamesArray[i]}] Post: [{positionsArray[i]}]");
+                    if (splitArray[0].ToLower() == surname.ToLower())
+                    {
+                        int number = 1;
+                        int dossierNumber = i + number;
 
-                    isSurnameFound = true;
-                    break;
+                        Console.WriteLine($"[{dossierNumber}] Full name: [{fullNamesArray[i]}] Post: [{positionsArray[i]}]");
+
+                        isSurnameFound = true;
+                        break;
+                    }
                 }
+
             }
 
-            if (isSurnameFound==false)
+            if (isSurnameFound == false)
             {
                 Console.WriteLine("Фамилия не найдена");
             }
