@@ -52,6 +52,7 @@ namespace PersonnelAccounting
                         isWork = false;
                         break;
                 }
+
                 Console.WriteLine("\n");
             }
         }
@@ -94,30 +95,28 @@ namespace PersonnelAccounting
 
         private static void SearchSurnames(ref string[] fullNamesArray, ref string[] positionsArray)
         {
+            char whitespace = ' ';
+            int count = 0;
+
             Console.WriteLine("Введите фамилию");
             string surname = Console.ReadLine();
 
-            string searchResult = string.Empty;
-
             for (int i = 0; i < fullNamesArray.Length; i++)
             {
-                string[] splitArray = fullNamesArray[i].Split(' ');
+                string[] splitArray = fullNamesArray[i].Split(whitespace);
 
                 for (int j = 0; j < splitArray.Length; j++)
                 {
-                    if (splitArray[0].ToLower().Equals(surname.ToLower()))
+                    if (splitArray[0].ToLower()==surname.ToLower())
                     {
-                        searchResult = $"{i + 1} {fullNamesArray[i]} {positionsArray[i]}";
+                        Console.WriteLine($"[{i+1}] Full name: [{fullNamesArray[i]}] Post: [{positionsArray[i]}]");
+                        count++;
                         break;
                     }
                 }
             }
 
-            if (searchResult != string.Empty)
-            {
-                Console.WriteLine(searchResult);
-            }
-            else
+            if (count==0)
             {
                 Console.WriteLine("Фамилия не найдена");
             }
