@@ -26,7 +26,7 @@ namespace PersonnelAccounting
                 Console.WriteLine($"{CommandDeleteDossier} Удалить досье");
                 Console.WriteLine($"{CommandSearchSurnames} Поиск по фамилии");
                 Console.WriteLine($"{CommandExit} Выход");
-                
+
                 userInput = Console.ReadLine();
                 Console.Clear();
 
@@ -82,7 +82,7 @@ namespace PersonnelAccounting
             Console.WriteLine("Введите номер досье которое хотите удалить");
             int.TryParse(Console.ReadLine(), out int element);
 
-            if (element < 0 || element > fullNamesArray.Length)
+            if (element <= 0 || element > fullNamesArray.Length)
             {
                 Console.WriteLine("Данные не верны");
             }
@@ -96,7 +96,8 @@ namespace PersonnelAccounting
         private static void SearchSurnames(ref string[] fullNamesArray, ref string[] positionsArray)
         {
             char whitespace = ' ';
-            int count = 0;
+
+            bool isSurnameFound = false;
 
             Console.WriteLine("Введите фамилию");
             string surname = Console.ReadLine();
@@ -105,18 +106,16 @@ namespace PersonnelAccounting
             {
                 string[] splitArray = fullNamesArray[i].Split(whitespace);
 
-                for (int j = 0; j < splitArray.Length; j++)
+                if (splitArray[0].ToLower() == surname.ToLower())
                 {
-                    if (splitArray[0].ToLower()==surname.ToLower())
-                    {
-                        Console.WriteLine($"[{i+1}] Full name: [{fullNamesArray[i]}] Post: [{positionsArray[i]}]");
-                        count++;
-                        break;
-                    }
+                    Console.WriteLine($"[{i + 1}] Full name: [{fullNamesArray[i]}] Post: [{positionsArray[i]}]");
+
+                    isSurnameFound = true;
+                    break;
                 }
             }
 
-            if (count==0)
+            if (isSurnameFound==false)
             {
                 Console.WriteLine("Фамилия не найдена");
             }
